@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
+Auth::routes();
+
+Route::get('/', 'ListingController@index')->name('listings');
+Route::get('/{id}', 'ListingController@show')->name('listing');
+//Route::get('/home', 'HomeController@index')->name('home');
+
+
