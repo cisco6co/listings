@@ -18,8 +18,14 @@ use Illuminate\Support\Facades\Route;
 });*/
 Auth::routes();
 
-Route::get('/', 'ListingController@index')->name('listings');
-Route::get('/{id}', 'ListingController@show')->name('listing');
-//Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/api/listings', 'ListingController@index')->name('listings');
+Route::get('/listing/create', 'ListingController@create')->name('listings.create')->middleware('auth');
+Route::get('/listing/{listing}', 'ListingController@index')->name('listings.show');
+Route::get('/api/categories', 'CategoryController@index')->name('categories');
+Route::get('/api/listings/prices', 'ListingPriceController')->name('listings.prices');
+
+Route::get('/listings/search', 'ListingController@search')->name('listings.search');
+
 
 

@@ -11,6 +11,7 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <livewire:styles />
 </head>
 <body class="bg-gray-100 h-screen antialiased leading-none">
     <div id="app">
@@ -30,7 +31,6 @@
                             @endif
                         @else
                             <span class="text-gray-300 text-sm pr-4">{{ Auth::user()->name }}</span>
-
                             <a href="{{ route('listings.create') }}"
                                class="no-underline hover:underline text-gray-300 text-sm p-3">{{ __('Create listing') }}</a>
 
@@ -51,5 +51,6 @@
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <livewire:scripts />
 </body>
 </html>
