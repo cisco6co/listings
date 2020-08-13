@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Listing;
+use App\Models\Listing;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
+use App\Http\Resources\ListingResource;
 
 class ListingController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a list of the resource.
      *
-     * @return Collection
      */
     public function index()
     {
-        return view('home');
+        $listings = Listing::withFilters()->get();
+
+        return ListingResource::collection($listings);
     }
 
     /**
@@ -26,19 +28,9 @@ class ListingController extends Controller
      */
     public function create()
     {
-        //return view('create');
-    }
+        $categories = Category::all();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //Listing::create($request->all());
+        return view('listings.create', ['categories' => $categories]);
     }
 
     /**
@@ -49,41 +41,20 @@ class ListingController extends Controller
      */
     public function show(Listing $listing)
     {
-
+        return view('listings.show', compact('listing'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Search resources from storage.
      *
-     * @param  Listing  $listing
+     * @param Request $request
+     *
      * @return Response
      */
-    public function edit(Listing $listing)
+    public function search(Request $request)
     {
-        //
-    }
+        $search = $request->get('q');
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request       $request
-     * @param  Listing $listing
-     *
-     * @return Response
-     */
-    public function update(Request $request, Listing $listing)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Listing  $listing
-     * @return Response
-     */
-    public function destroy(Listing $listing)
-    {
-        //
+        return Listing::all()->toArray();//where('name', 'like', '%'.$search.'%');
     }
 }

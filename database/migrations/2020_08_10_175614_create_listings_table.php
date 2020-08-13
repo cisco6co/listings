@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +17,8 @@ class CreateListingsTable extends Migration
             $table->id();
             $table->string('title', 255);
             $table->string('slug', 255);
-            $table->enum('category', Category::getValues());
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('category_id');
             $table->text('description');
             $table->dateTime('online_at');
             $table->dateTime('offline_at');
@@ -26,7 +26,6 @@ class CreateListingsTable extends Migration
             $table->string('currency', 3);
             $table->string('contact_mobile', 20);
             $table->string('contact_email', 50);
-            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
 
