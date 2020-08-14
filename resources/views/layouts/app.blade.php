@@ -13,6 +13,7 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="bg-gray-100 h-screen antialiased leading-none">
+
     <div id="app">
         <nav class="bg-blue-900 shadow mb-8 py-6">
             <div class="container mx-auto px-6 md:px-0">
@@ -50,6 +51,9 @@
         @yield('content')
     </div>
     <!-- Scripts -->
+    {{--<script defer src="https://unpkg.com/ziggy-js@0.9.x/dist/js/route.min.js"></script>
+    @routes--}}
+    <!-- Load the Ziggy routes object first -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 </body>
 </html>

@@ -46,6 +46,18 @@ class Listing extends Model implements HasMedia
                         $query->orWhere('price', '>', '1000');
                     });
                 });
+            })
+            ->when(!empty(request()->input('search', '')), function ($query) {
+                $search = request()->input('search', '');
+                $query->where('title', 'like', '%'. $search . '%')
+                    ->orWhereHas('category', function ($query) use ($search) {
+                          $query->where('name', 'like', '%' . $search . '%');
+                    });
             });
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

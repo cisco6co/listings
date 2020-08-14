@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Listing;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\ListingResource;
 
@@ -42,19 +41,5 @@ class ListingController extends Controller
     public function show(Listing $listing)
     {
         return view('listings.show', compact('listing'));
-    }
-
-    /**
-     * Search resources from storage.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function search(Request $request)
-    {
-        $search = $request->get('q');
-
-        return Listing::all()->toArray();//where('name', 'like', '%'.$search.'%');
     }
 }
