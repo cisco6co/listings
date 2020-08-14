@@ -9,10 +9,7 @@
                     {{ session('status') }}
                 </div>
             @endif
-
-            <!--<div class="flex flex-col break-words bg-white border border-2 rounded shadow-md">-->
                 @livewire('listing-create-form', ['categories' => $categories])
-                <!--</div>-->
             </div>
         </div>
 @endsection

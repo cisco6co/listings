@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -19,6 +20,14 @@ mix
     require('postcss-nested'),
     require('autoprefixer'),
   ]);
+
+mix.webpackConfig({
+    resolve: {
+        alias: {
+            ziggy: path.resolve('vendor/tightenco/ziggy/src/js/route.js'),
+        },
+    },
+});
 
 if (mix.inProduction()) {
   mix

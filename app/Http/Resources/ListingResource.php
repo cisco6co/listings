@@ -16,6 +16,7 @@ class ListingResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'slug' => $this->slug,
             'title' => $this->title,
             'description' => $this->description,
             'price' => number_format($this->price, 2)

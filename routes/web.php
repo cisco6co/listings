@@ -13,19 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/api/listings', 'ListingController@index')->name('listings');
 Route::get('/listing/create', 'ListingController@create')->name('listings.create')->middleware('auth');
-Route::get('/listing/{listing}', 'ListingController@index')->name('listings.show');
+Route::get('/listing/{listing}', 'ListingController@show')->name('listings.show');
 Route::get('/api/categories', 'CategoryController@index')->name('categories');
 Route::get('/api/listings/prices', 'ListingPriceController')->name('listings.prices');
-
-Route::get('/listings/search', 'ListingController@search')->name('listings.search');
 
 
 
