@@ -9,7 +9,6 @@ class HomeController extends Controller
 {
     /**
      * Display a list of the resource.
-     *
      */
     public function index()
     {

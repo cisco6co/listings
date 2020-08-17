@@ -61,7 +61,6 @@ export default {
     data: function () {
         return {
             prices: [],
-            search: '',
             categories: [],
             listings: [],
             selected: {
@@ -72,9 +71,7 @@ export default {
         }
     },
     mounted() {
-        this.loadCategories();
-        this.loadPrices();
-        this.loadListings();
+        this.loadAll();
     },
     watch: {
         selected: {
@@ -82,20 +79,28 @@ export default {
                 this.loadAll();
             },
             deep: true
-        }/*,
-        search(newVal, oldVal) {
-            if (newVal.length > 2) {
-                this.loadCategories();
-                this.loadPrices();
-                this.loadListings();
-            }
-        }*/
+        }
     },
     methods: {
-        loadCategories: function () {
-            axios.get('/api/categories', {
-                params: _.omit(this.selected, 'categories')
+        /**
+         * Fetch listings.
+         */
+        loadListings: function () {
+            axios.get('/api/listings', {
+                params: this.selected
             })
+                .then((response) => {
+                    this.listings = response.data.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        /**
+         * Fetch categories.
+         */
+        loadCategories: function () {
+            axios.get('/api/categories')
                 .then((response) => {
                     this.categories = response.data.data;
                 })
@@ -103,23 +108,13 @@ export default {
                     console.log(error);
                 });
         },
+        /**
+         * Fetch price ranges.
+         */
         loadPrices: function () {
-            axios.get('/api/listings/prices', {
-                params: _.omit(this.selected, 'prices')
-            })
+            axios.get('/api/listings/prices')
                 .then((response) => {
                     this.prices = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        loadListings: function () {
-            axios.get('/api/listings', {
-                params: this.selected
-            })
-                .then((response) => {
-                    this.listings = response.data.data;
                 })
                 .catch(function (error) {
                     console.log(error);

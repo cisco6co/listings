@@ -1970,7 +1970,6 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       prices: [],
-      search: '',
       categories: [],
       listings: [],
       selected: {
@@ -1981,9 +1980,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.loadCategories();
-    this.loadPrices();
-    this.loadListings();
+    this.loadAll();
   },
   watch: {
     selected: {
@@ -1992,46 +1989,44 @@ __webpack_require__.r(__webpack_exports__);
       },
       deep: true
     }
-    /*,
-    search(newVal, oldVal) {
-       if (newVal.length > 2) {
-           this.loadCategories();
-           this.loadPrices();
-           this.loadListings();
-       }
-    }*/
-
   },
   methods: {
-    loadCategories: function loadCategories() {
-      var _this = this;
-
-      axios.get('/api/categories', {
-        params: _.omit(this.selected, 'categories')
-      }).then(function (response) {
-        _this.categories = response.data.data;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    loadPrices: function loadPrices() {
-      var _this2 = this;
-
-      axios.get('/api/listings/prices', {
-        params: _.omit(this.selected, 'prices')
-      }).then(function (response) {
-        _this2.prices = response.data;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
+    /**
+     * Fetch listings.
+     */
     loadListings: function loadListings() {
-      var _this3 = this;
+      var _this = this;
 
       axios.get('/api/listings', {
         params: this.selected
       }).then(function (response) {
-        _this3.listings = response.data.data;
+        _this.listings = response.data.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+
+    /**
+     * Fetch categories.
+     */
+    loadCategories: function loadCategories() {
+      var _this2 = this;
+
+      axios.get('/api/categories').then(function (response) {
+        _this2.categories = response.data.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+
+    /**
+     * Fetch price ranges.
+     */
+    loadPrices: function loadPrices() {
+      var _this3 = this;
+
+      axios.get('/api/listings/prices').then(function (response) {
+        _this3.prices = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -33269,11 +33264,6 @@ var Ziggy = {
     },
     "listings.prices": {
       "uri": "api\/listings\/prices",
-      "methods": ["GET", "HEAD"],
-      "domain": null
-    },
-    "listings.search": {
-      "uri": "listings\/search",
       "methods": ["GET", "HEAD"],
       "domain": null
     }
