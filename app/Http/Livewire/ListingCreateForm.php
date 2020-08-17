@@ -35,7 +35,7 @@ class ListingCreateForm extends Component
         'categoryId' => 'required',
     ];
 
-    public function mount($categories)
+    public function mount($categories = [])
     {
         $this->categories = $categories;
     }
@@ -44,7 +44,7 @@ class ListingCreateForm extends Component
     {
         $this->validateOnly(
             $field,
-            $this->rules,
+            $this->rules
         );
     }
 
