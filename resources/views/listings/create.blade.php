@@ -1,4 +1,4 @@
-@extends('layouts.app-livewire')
+@extends('layouts.app')
 
 @section('content')
     <div class="flex items-center">
@@ -9,7 +9,7 @@
                     {{ session('status') }}
                 </div>
             @endif
-                @livewire('listing-create-form', ['categories' => $categories])
+                <livewire:listing-create-form :categories="$categories" :currencies="$currencies"/>
             </div>
         </div>
 @endsection

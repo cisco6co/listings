@@ -7,6 +7,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.Pikaday = require('pikaday');
+window.moment = require('moment');
+import 'alpinejs'
 
 import route from 'ziggy';
 import { Ziggy } from './ziggy';
