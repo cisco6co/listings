@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Currency;
 use App\Models\Listing;
 use App\Models\Category;
 use Illuminate\Http\Response;
@@ -27,8 +28,9 @@ class ListingController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $currencies = Currency::getValues();
 
-        return view('listings.create', ['categories' => $categories]);
+        return view('listings.create', compact('categories', 'currencies'));
     }
 
     /**

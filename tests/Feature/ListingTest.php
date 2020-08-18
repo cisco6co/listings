@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Enums\Currency;
 use Tests\TestCase;
 use App\Models\User;
 use Livewire\Livewire;
 use App\Models\Listing;
 use App\Models\Category;
+use App\Enums\PriceFilter;
 use App\Http\Livewire\ListingCreateForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -15,7 +17,7 @@ class ListingTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    function listing_creation_page_contains_livewire_component()
+    public function test_listing_creation_page_contains_livewire_component()
     {
         $this->actingAs(factory(User::class)->create());
 
@@ -23,7 +25,7 @@ class ListingTest extends TestCase
     }
 
     /** @test */
-    function can_create_listing()
+    public function test_it_can_create_listing()
     {
         $this->actingAs(factory(User::class)->create());
 
@@ -35,7 +37,7 @@ class ListingTest extends TestCase
             ->set('onlineAt', '2020-08-17')
             ->set('offlineAt', '2020-08-30')
             ->set('price', '100')
-            ->set('currency', 'usd')
+            ->set('currency', Currency::EUR)
             ->set('contactMobile', '1234567890')
             ->set('contactEmail', 'test@listingtest.com')
             ->set('categoryId', $category->id)
@@ -45,7 +47,7 @@ class ListingTest extends TestCase
     }
 
     /** @test */
-    function title_is_required()
+    public function test_title_is_required()
     {
         $this->actingAs(factory(User::class)->create());
 
@@ -56,7 +58,7 @@ class ListingTest extends TestCase
     }
 
     /** @test */
-    function contactEmail_format_is_ok()
+    public function test_contactEmail_format_is_ok()
     {
         $this->actingAs(factory(User::class)->create());
 
@@ -67,7 +69,7 @@ class ListingTest extends TestCase
     }
 
     /** @test */
-    function is_redirected_to_home_page_after_creation()
+    public function test_it_is_redirected_to_home_page_after_creation()
     {
         $this->actingAs(factory(User::class)->create());
 
@@ -79,7 +81,7 @@ class ListingTest extends TestCase
             ->set('onlineAt', '2020-08-17')
             ->set('offlineAt', '2020-08-30')
             ->set('price', '100')
-            ->set('currency', 'usd')
+            ->set('currency', Currency::EUR)
             ->set('contactMobile', '1234567890')
             ->set('contactEmail', 'test@listingtest.com')
             ->set('categoryId', $category->id)
@@ -88,7 +90,7 @@ class ListingTest extends TestCase
     }
 
     /** @test */
-    function it_can_show_a_listing_details()
+    public function test_it_can_show_a_listing_details()
     {
         $listing = factory(Listing::class)->create();
 
@@ -102,17 +104,80 @@ class ListingTest extends TestCase
     }
 
     /** @test */
-    function it_can_search_by_category()
+    public function test_it_can_search_by_listing_title()
     {
-        $listings = factory(Listing::class, 2)->create([
-
+        $listing = factory(Listing::class)->create([
+            'title' => 'Test title',
         ]);
 
-        $category = $listings->first()->category()->get();
+        factory(Listing::class)->create();
 
-        $response = $this->get(route('listings', ['search' => '']));
-        //$response->assertJsonCount(1, 'data');
+        $response = $this->get(route('listings', ['search' => $listing->title]));
 
-        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+    }
+
+    /** @test */
+    public function test_it_can_search_by_category()
+    {
+        $category = factory(Category::class)->create([
+            'name' => 'Category 1',
+         ]);
+
+        factory(Listing::class)->create([
+            'category_id' => $category->id,
+        ]);
+
+        $anotherCategory = factory(Category::class)->create([
+            'name' => 'Category 2',
+        ]);
+
+        factory(Listing::class)->create([
+            'category_id' => $anotherCategory->id,
+        ]);
+
+        $response = $this->get(route('listings', ['search' => $category->name]));
+
+        $response->assertJsonCount(1, 'data');
+    }
+
+    /** @test */
+    public function test_it_can_filter_by_category()
+    {
+        $category = factory(Category::class)->create([
+            'name' => 'Category 1',
+        ]);
+
+        factory(Listing::class)->create([
+            'category_id' => $category->id,
+        ]);
+
+        $anotherCategory = factory(Category::class)->create([
+            'name' => 'Category 2',
+        ]);
+
+        factory(Listing::class)->create([
+            'category_id' => $anotherCategory->id,
+        ]);
+
+        $response = $this->get(route('listings', ['categories' => [$category->id]]));
+
+        $response->assertJsonCount(1, 'data');
+    }
+
+    /** @test */
+    public function test_it_can_filter_by_price()
+    {
+        factory(Listing::class)->create([
+            'price' => 100,
+        ]);
+
+        factory(Listing::class)->create([
+            'price' => 1000,
+        ]);
+
+        $response = $this->get(route('listings', ['prices' => [PriceFilter::FROM_100_TO_500]]));
+
+        $response->assertJsonCount(1, 'data');
     }
 }
