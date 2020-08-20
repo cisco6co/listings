@@ -117,6 +117,21 @@
                    <p class="text-red-600 text-xs italic">@error('contactEmail'){{ $message }}  @enderror</p>
                 </div>
             </div>
+            <div class="-mx-3 md:flex mb-6">
+                <div class="md:w-full px-3">
+                    <label for="image" class="block tracking-wide text-grey-darker text-xs font-bold mb-2">
+                        Image
+                    </label>
+                    <div class="box-content h-20 w-32 p-4 m-4 border rounded">
+                        @if ($image)
+                            <img src="{{ $image->temporaryUrl() }}">
+                        @endif
+                    </div>
+                    <input type="file" wire:model="image" class="font-semibold py-2 px-4 border rounded hover:border-blue-300">
+                    <div wire:loading wire:target="image">Uploading...</div>
+                    @error('image') <span class="error">{{ $message }}</span> @enderror
+                </div>
+            </div>
             <div class="flex justify-between mt-4">
                 <div>
                     <input type="submit" wire:click="redirectToHome" value="Cancel" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"/>

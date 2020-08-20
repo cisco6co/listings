@@ -43,12 +43,12 @@
                 <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col" v-for="listing in listings">
                     <a :href="route('listings.show', {listing: listing.slug})">
                         <!--<a href="">-->
-                        <img class="hover:grow hover:shadow-lg" src="http://placehold.it/700x400" alt="">
+                        <img class="hover:grow hover:shadow-lg" :src="listing.imageUrl" alt="">
                         <div class="pt-3 flex items-center justify-between">
                             <p class="font-weight-bold">{{ listing.title }}</p>
                         </div>
                         <p class="pt-4 text-gray-600 text-xs font-weight-light">{{ listing.description }}</p>
-                        <p class="pt-4 text-gray-900">${{ listing.price }}</p>
+                        <p class="pt-4 text-gray-900">{{ listing.price }} {{ listing.currency }}</p>
                     </a>
                 </div>
             </div>

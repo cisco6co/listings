@@ -45114,7 +45114,7 @@ var render = function() {
                     [
                       _c("img", {
                         staticClass: "hover:grow hover:shadow-lg",
-                        attrs: { src: "http://placehold.it/700x400", alt: "" }
+                        attrs: { src: listing.imageUrl, alt: "" }
                       }),
                       _vm._v(" "),
                       _c(
@@ -45139,7 +45139,9 @@ var render = function() {
                       ),
                       _vm._v(" "),
                       _c("p", { staticClass: "pt-4 text-gray-900" }, [
-                        _vm._v("$" + _vm._s(listing.price))
+                        _vm._v(
+                          _vm._s(listing.price) + " " + _vm._s(listing.currency)
+                        )
                       ])
                     ]
                   )

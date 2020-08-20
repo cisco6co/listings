@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Enums\Currency;
 use Tests\TestCase;
 use App\Models\User;
 use Livewire\Livewire;
+use App\Enums\Currency;
 use App\Models\Listing;
 use App\Models\Category;
 use App\Enums\PriceFilter;
@@ -27,6 +27,8 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_create_listing()
     {
+        $this->withoutExceptionHandling();
+
         $this->actingAs(factory(User::class)->create());
 
         $category = factory(Category::class)->create();

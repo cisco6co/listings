@@ -2,16 +2,19 @@
 
 namespace App\Http\Livewire;
 
-use App\Enums\Currency;
 use Carbon\Carbon;
 use App\Models\Listing;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
+use App\Enums\Currency;
+use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class ListingCreateForm extends Component
 {
+    use WithFileUploads;
+
     public $title;
     public $description;
     public $onlineAt;
@@ -21,6 +24,7 @@ class ListingCreateForm extends Component
     public $contactMobile;
     public $contactEmail;
     public $categoryId;
+    public $image;
 
     // Mountings.
     public $categories;
@@ -31,7 +35,7 @@ class ListingCreateForm extends Component
         $this->categories = $categories;
         $this->currencies = $currencies;
         $this->onlineAt   = Carbon::now()->toDateString();
-        $this->offlineAt  = Carbon::tomorrow()->toDateString();
+        $this->offlineAt  = Carbon::now()->add(10, 'day')->toDateString();
     }
 
     public function updated($field)
@@ -46,7 +50,7 @@ class ListingCreateForm extends Component
     {
         $this->validate($this->rules());
 
-        Listing::create([
+        $listing = Listing::create([
             'title'          => $this->title,
             'slug'           => $this->generateSlug(),
             'description'    => $this->description,
@@ -59,6 +63,13 @@ class ListingCreateForm extends Component
             'category_id'    => $this->categoryId,
             'user_id'        => Auth::user()->id,
         ]);
+
+        if ($this->image) {
+            $path = $this->image->store('images');
+
+            $listing->addMedia(storage_path('app/'.$path))
+                ->toMediaCollection('images');
+        }
 
         return $this->redirectToHome();
     }
@@ -93,8 +104,8 @@ class ListingCreateForm extends Component
         return [
             'title'         => 'required',
             'description'   => 'required',
-            'onlineAt'      => ['required'],//|date',
-            'offlineAt'     => ['required'],//|date|after:onlineAt',
+            'onlineAt'      => 'required',
+            'offlineAt'     => 'required',
             'price'         => 'required|numeric',
             'currency'      => [
                 'required',
@@ -103,6 +114,7 @@ class ListingCreateForm extends Component
             'contactMobile' => 'required',
             'contactEmail'  => 'required|email',
             'categoryId'    => 'required',
+            'image'         => 'nullable|sometimes|image|max:1024',
         ];
     }
 }

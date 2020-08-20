@@ -80,6 +80,11 @@ Run the seeders:
 php artisan db:seed
 ```
 
+Create the symbolic link:
+```bash
+php artisan storage:link
+```
+
 Install dependencies using npm
 
 ```bash
