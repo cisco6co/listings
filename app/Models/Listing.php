@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\PriceFilter;
+use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -54,6 +55,19 @@ class Listing extends Model implements HasMedia
                           $query->where('name', 'like', '%' . $search . '%');
                     });
             });
+    }
+
+    public function registerMediaConversions(Media $media = null)
+    {
+        $this->addMediaConversion('thumb')
+            ->width(200)
+            ->height(200)
+            ->sharpen(10);
+
+        $this->addMediaConversion('detail')
+            ->width(412)
+            ->height(412)
+            ->sharpen(10);
     }
 
     public function getRouteKeyName()

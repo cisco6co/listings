@@ -19,6 +19,8 @@ class ListingResource extends JsonResource
             'slug' => $this->slug,
             'title' => $this->title,
             'description' => $this->description,
+            'currency' => $this->currency,
+            'imageUrl' => $this->getFirstMediaUrl('images', 'thumb'),
             'price' => number_format($this->price, 2)
         ];
     }
