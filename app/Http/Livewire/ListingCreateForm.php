@@ -67,7 +67,7 @@ class ListingCreateForm extends Component
         if ($this->image) {
             $path = $this->image->store('images');
 
-            $listing->addMedia(storage_path('app/'.$path))
+            $listing->addMedia(storage_path('app/' . $path))
                 ->toMediaCollection('images');
         }
 
@@ -114,7 +114,7 @@ class ListingCreateForm extends Component
             'contactMobile' => 'required',
             'contactEmail'  => 'required|email',
             'categoryId'    => 'required',
-            'image'         => 'nullable|sometimes|image|max:1024',
+            'image'         => 'nullable|sometimes|image|max:2048',
         ];
     }
 }

@@ -36,7 +36,8 @@ class ListingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Listing  $listing
+     * @param Listing $listing
+     *
      * @return Response
      */
     public function show(Listing $listing)

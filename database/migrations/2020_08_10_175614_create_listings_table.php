@@ -24,7 +24,7 @@ class CreateListingsTable extends Migration
             $table->dateTime('offline_at');
             $table->double('price');
             $table->string('currency', 3);
-            $table->string('contact_mobile', 20);
+            $table->string('contact_mobile', 25);
             $table->string('contact_email', 50);
             $table->timestamps();
         });
