@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Currency;
-use App\Models\Listing;
-use App\Models\Category;
-use Illuminate\Http\Response;
 use App\Http\Resources\ListingResource;
+use App\Models\Category;
+use App\Models\Listing;
+use Illuminate\Http\Response;
 
 class ListingController extends Controller
 {

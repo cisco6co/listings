@@ -21,6 +21,3 @@ Route::get('/listing/create', 'ListingController@create')->name('listings.create
 Route::get('/listing/{listing}', 'ListingController@show')->name('listings.show');
 Route::get('/api/categories', 'CategoryController@index')->name('categories');
 Route::get('/api/listings/prices', 'ListingPriceController')->name('listings.prices');
-
-
-

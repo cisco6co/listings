@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Enums\PriceFilter;
-use Spatie\MediaLibrary\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media;
 
 class Listing extends Model implements HasMedia
 {
@@ -27,8 +27,8 @@ class Listing extends Model implements HasMedia
     public function scopeWithFilters($query)
     {
         return $query->when(count(request()->input('categories', [])), function ($query) {
-                $query->whereIn('category_id', request()->input('categories'));
-            })
+            $query->whereIn('category_id', request()->input('categories'));
+        })
             ->when(count(request()->input('prices', [])), function ($query) {
                 $query->where(function ($query) {
                     $query->when(in_array(PriceFilter::LESS_THAN_50, request()->input('prices')), function ($query) {
@@ -50,9 +50,9 @@ class Listing extends Model implements HasMedia
             })
             ->when(!empty(request()->input('search', '')), function ($query) {
                 $search = request()->input('search', '');
-                $query->where('title', 'like', '%'. $search . '%')
+                $query->where('title', 'like', '%' . $search . '%')
                     ->orWhereHas('category', function ($query) use ($search) {
-                          $query->where('name', 'like', '%' . $search . '%');
+                        $query->where('name', 'like', '%' . $search . '%');
                     });
             })->orderBy('created_at', 'desc');
     }

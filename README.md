@@ -38,7 +38,7 @@ git clone https://github.com/cisco6co/listings.git
 Copy the docker ```env```:
 
 ```bash
-cd .docker
+cd listings/.docker
 ```
 
 ```bash
@@ -94,13 +94,18 @@ npm install
 If you are building for developement:
 
 ```bash
-npm run serve
+npm run dev
 ```
 
 If you are building for production:
 
 ```bash
-npm run build
+npm run prod
 ```
 
-You should now be up and running
+You should now be up and running. A test user is availlable, but you can create others. The test user login credentials are:
+
+```bash
+Login - test.user@email.com 
+Password - password
+```
