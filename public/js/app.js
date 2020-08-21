@@ -45113,8 +45113,11 @@ var render = function() {
                     },
                     [
                       _c("img", {
-                        staticClass: "hover:grow hover:shadow-lg",
-                        attrs: { src: listing.imageUrl, alt: "" }
+                        staticClass: "hover:grow hover:shadow-lg rounded",
+                        attrs: {
+                          src: listing.imageUrl,
+                          alt: listing.title + " image"
+                        }
                       }),
                       _vm._v(" "),
                       _c(

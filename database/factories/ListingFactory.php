@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 $factory->define(Listing::class, function (Faker $faker) {
 
-    $title = $faker->sentence(3);
+    $title = $faker->words(3, true);
     $slug = Str::slug($title, '-');
     return [
         'title' => $title,
@@ -21,7 +21,7 @@ $factory->define(Listing::class, function (Faker $faker) {
         'price' => $faker->randomNumber(),
         'currency' => $faker->currencyCode,
         'contact_mobile' => $faker->phoneNumber,
-        'contact_email' => $faker->phoneNumber,
+        'contact_email' => $faker->email,
         'category_id' => factory(Category::class)->create()->id,
         'user_id' => factory(User::class)->create()->id,
     ];

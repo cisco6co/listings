@@ -54,19 +54,19 @@ class Listing extends Model implements HasMedia
                     ->orWhereHas('category', function ($query) use ($search) {
                           $query->where('name', 'like', '%' . $search . '%');
                     });
-            });
+            })->orderBy('created_at', 'desc');
     }
 
     public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')
-            ->width(200)
-            ->height(200)
+            ->width(230)
+            ->height(173)
             ->sharpen(10);
 
         $this->addMediaConversion('detail')
-            ->width(412)
-            ->height(412)
+            ->width(408)
+            ->height(306)
             ->sharpen(10);
     }
 
