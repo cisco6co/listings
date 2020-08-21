@@ -2,14 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use Carbon\Carbon;
-use App\Models\Listing;
-use Livewire\Component;
 use App\Enums\Currency;
-use Illuminate\Support\Str;
-use Livewire\WithFileUploads;
-use Illuminate\Validation\Rule;
+use App\Models\Listing;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class ListingCreateForm extends Component
 {
@@ -34,8 +34,8 @@ class ListingCreateForm extends Component
     {
         $this->categories = $categories;
         $this->currencies = $currencies;
-        $this->onlineAt   = Carbon::now()->toDateString();
-        $this->offlineAt  = Carbon::now()->add(10, 'day')->toDateString();
+        $this->onlineAt = Carbon::now()->toDateString();
+        $this->offlineAt = Carbon::now()->add(10, 'day')->toDateString();
     }
 
     public function updated($field)

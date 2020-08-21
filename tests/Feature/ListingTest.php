@@ -2,15 +2,15 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
-use Livewire\Livewire;
 use App\Enums\Currency;
-use App\Models\Listing;
-use App\Models\Category;
 use App\Enums\PriceFilter;
 use App\Http\Livewire\ListingCreateForm;
+use App\Models\Category;
+use App\Models\Listing;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class ListingTest extends TestCase
 {
@@ -94,7 +94,7 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_show_a_listing_details()
     {
-        $listing = factory(Listing::class)->create();
+        $listing = factory(Listing::class)->states('with_category', 'with_user')->create();
 
         $response = $this->get(route('listings.show', $listing));
 
@@ -108,11 +108,11 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_search_by_listing_title()
     {
-        $listing = factory(Listing::class)->create([
+        $listing = factory(Listing::class)->states('with_category', 'with_user')->create([
             'title' => 'Test title',
         ]);
 
-        factory(Listing::class)->create();
+        factory(Listing::class)->states('with_category', 'with_user')->create();
 
         $response = $this->get(route('listings', ['search' => $listing->title]));
 
@@ -126,7 +126,7 @@ class ListingTest extends TestCase
             'name' => 'Category 1',
          ]);
 
-        factory(Listing::class)->create([
+        factory(Listing::class)->states('with_user')->create([
             'category_id' => $category->id,
         ]);
 
@@ -134,7 +134,7 @@ class ListingTest extends TestCase
             'name' => 'Category 2',
         ]);
 
-        factory(Listing::class)->create([
+        factory(Listing::class)->states('with_user')->create([
             'category_id' => $anotherCategory->id,
         ]);
 
@@ -150,7 +150,7 @@ class ListingTest extends TestCase
             'name' => 'Category 1',
         ]);
 
-        factory(Listing::class)->create([
+        factory(Listing::class)->states('with_user')->create([
             'category_id' => $category->id,
         ]);
 
@@ -158,7 +158,7 @@ class ListingTest extends TestCase
             'name' => 'Category 2',
         ]);
 
-        factory(Listing::class)->create([
+        factory(Listing::class)->states('with_user')->create([
             'category_id' => $anotherCategory->id,
         ]);
 
@@ -170,11 +170,11 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_filter_by_price()
     {
-        factory(Listing::class)->create([
+        factory(Listing::class)->states('with_category', 'with_user')->create([
             'price' => 100,
         ]);
 
-        factory(Listing::class)->create([
+        factory(Listing::class)->states('with_category', 'with_user')->create([
             'price' => 1000,
         ]);
 

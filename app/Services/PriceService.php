@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Listing;
 use App\Enums\PriceFilter;
+use App\Models\Listing;
 
 class PriceService
 {
@@ -44,6 +44,6 @@ class PriceService
 
     private function getPriceName($index)
     {
-        return ucfirst(strtolower(str_replace('_',' ',PriceFilter::getKey($index))));
+        return ucfirst(strtolower(str_replace('_', ' ', PriceFilter::getKey($index))));
     }
 }

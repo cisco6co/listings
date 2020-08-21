@@ -14,19 +14,19 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Furniture',
+                'name'        => 'Furniture',
                 'description' => 'Furniture listings',
             ],
             [
-                'name' => 'Electronics',
+                'name'        => 'Electronics',
                 'description' => 'Electronics listings',
             ],
             [
-                'name' => 'Cars',
+                'name'        => 'Cars',
                 'description' => 'Cars listings',
             ],
             [
-                'name' => 'Property',
+                'name'        => 'Property',
                 'description' => 'Property listings',
             ],
         ];
