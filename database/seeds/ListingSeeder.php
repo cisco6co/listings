@@ -14,28 +14,28 @@ class ListingSeeder extends Seeder
     public function run()
     {
         // Create ten Furnitures.
-        factory(Listing::class, 10)->create([
+        Listing::factory()->count(10000)->make([
             'currency'    => Currency::getRandomValue(),
             'category_id' => 1,
             'user_id'     => 1,
         ]);
 
         // Create ten Electronics.
-        factory(Listing::class, 10)->create([
+        Listing::factory()->count(10000)->make([
             'currency'    => Currency::getRandomValue(),
             'category_id' => 2,
             'user_id'     => 1,
         ]);
 
         // Create ten Cars.
-        factory(Listing::class, 10)->create([
+        Listing::factory()->count(10000)->make([
             'currency'    => Currency::getRandomValue(),
             'category_id' => 3,
             'user_id'     => 1,
         ]);
 
         // Create ten Properties.
-        factory(Listing::class, 10)->create([
+        Listing::factory()->count(10000)->make([
             'currency'    => Currency::getRandomValue(),
             'category_id' => 4,
             'user_id'     => 1,

@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use App\Enums\PriceFilter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 
 class Listing extends Model implements HasMedia
 {
-    use HasMediaTrait;
+    use HasMediaTrait, Searchable, HasFactory;
 
     protected $guarded = [];
 
@@ -19,7 +22,43 @@ class Listing extends Model implements HasMedia
         'offline_at',
     ];
 
-    public function category()
+    /**
+     * Get the name of the index associated with the model.
+     *
+     * @return string
+     */
+    public function searchableAs()
+    {
+        if (app()->environment('testing')) {
+            return 'testing_listings_index';
+        }
+
+        return 'listings_index';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        return [
+            'id' => $array['id'],
+            'title' => $array['title'],
+            'price' => $array['price'],
+            'category_id' => $array['category_id'],
+            'category' => $this->category->name,
+        ];
+    }
+
+    /**
+     * The category to which the listing belongs.
+     *
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -68,6 +107,18 @@ class Listing extends Model implements HasMedia
             ->width(408)
             ->height(306)
             ->sharpen(10);
+    }
+
+    /**
+     * Attribute returning the image url.
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute(): string
+    {
+        return !empty($this->getFirstMediaUrl('images', 'thumb'))
+            ? $this->getFirstMediaUrl('images', 'thumb')
+            : 'https://via.placeholder.com/400x300?text=' . $this->category->name;
     }
 
     public function getRouteKeyName()

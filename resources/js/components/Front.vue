@@ -21,7 +21,6 @@
             </div>
         </div>
         <div class="flex-1">
-
             <div class="w-full flex justify-center">
                 <div class="w-3/4 flex rounded-full bg-white text-gray-600">
                     <input type="search" name="search" v-model="selected.search" @keyup.enter="loadAll()" placeholder="Search by title or category" class="w-full bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none">
@@ -32,9 +31,6 @@
                     </button>
                 </div>
             </div>
-            <!--<div class="w-full flex justify-center">
-                <p v-if="selected.search.length > 3">Searching for {{selected.search}}</p>
-            </div>-->
             <div class="flex items-center flex-wrap pt-4 pb-12">
                 <div class="w-full flex flex-col" v-if="listings.length < 1">
                     <p class="text-center">No results found.</p>
@@ -42,7 +38,6 @@
 
                 <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col" v-for="listing in listings">
                     <a :href="route('listings.show', {listing: listing.slug})">
-                        <!--<a href="">-->
                         <img class="hover:grow hover:shadow-lg rounded" :src="listing.imageUrl" :alt="listing.title + ' image'">
                         <div class="pt-3 flex items-center justify-between">
                             <p class="font-weight-bold">{{ listing.title }}</p>
@@ -51,8 +46,44 @@
                         <p class="pt-4 text-gray-900">{{ listing.price }} {{ listing.currency }}</p>
                     </a>
                 </div>
+
+                <div class="w-full flex flex-col" v-if="listings.length >= 1">
+                    <nav v-if="meta"
+                         class="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0"
+                    >
+                        <div class="-mt-px w-0 flex-1 flex">
+                            <button class="border-t-2 border-transparent pt-4 pr-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                                    :disabled="meta.current_page <= 1"
+                                    @click.prevent="loadListings(meta.current_page - 1)"
+                                    v-text="">
+                                <svg class="mr-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                                </svg>
+                                Previous
+                            </button>
+                        </div>
+                        <div class="hidden md:-mt-px md:flex">
+                            <span class="border-transparent text-gray-500 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"
+                                  v-text="`${meta.from} - ${meta.to}`"
+                            >
+                        </span>
+                        </div>
+                        <div class="-mt-px w-0 flex-1 flex justify-end">
+                            <button class="border-t-2 border-transparent pt-4 pl-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                                    :disabled="meta.current_page >= meta.last_page"
+                                    @click.prevent="loadListings(meta.current_page + 1)"
+                            >
+                                Next
+                                <svg class="ml-3 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </nav>
+                </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -68,6 +99,7 @@ export default {
                 categories: [],
                 search: ''
             },
+            meta: {},
         }
     },
     mounted() {
@@ -83,21 +115,19 @@ export default {
     },
     methods: {
         /**
-         * Fetch listings.
+         * Load listings.
          */
-        loadListings: function () {
-            axios.get('/api/listings', {
-                params: this.selected
-            })
-                .then((response) => {
-                    this.listings = response.data.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+        async loadListings(page = 1) {
+            this.page = page;
+            let params = this.selected;
+            params['page'] = page;
+            const response = await axios.get('/api/listings', {params: params});
+            this.listings = response.data.data;
+            this.meta = response.data.meta;
         },
+
         /**
-         * Fetch categories.
+         * Load categories.
          */
         loadCategories: function () {
             axios.get('/api/categories')
@@ -108,8 +138,9 @@ export default {
                     console.log(error);
                 });
         },
+
         /**
-         * Fetch price ranges.
+         * Load price ranges.
          */
         loadPrices: function () {
             axios.get('/api/listings/prices')
@@ -120,6 +151,7 @@ export default {
                     console.log(error);
                 });
         },
+
         loadAll: function () {
             this.loadCategories();
             this.loadPrices();

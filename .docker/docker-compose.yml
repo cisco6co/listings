@@ -13,6 +13,8 @@ volumes:
     driver: ${VOLUMES_DRIVER}
   docker-in-docker:
     driver: ${VOLUMES_DRIVER}
+  meilisearch:
+    driver: ${VOLUMES_DRIVER}
 
 services:
 
@@ -307,4 +309,15 @@ services:
       expose:
         - 2375
       networks:
+        - backend
+
+  ### MeiliSearch ##########################################
+    meilisearch:
+      image: getmeili/meilisearch:latest
+      volumes:
+        - ${DATA_PATH_HOST}/meilisearch:/var/lib/meilisearch
+      ports:
+        - "${MEILISEARCH_HOST_PORT}:7700"
+      networks:
+        - frontend
         - backend

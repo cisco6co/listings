@@ -1,37 +1,68 @@
 <?php
-
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Listing;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-$factory->define(Listing::class, function (Faker $faker) {
-    $title = $faker->words(3, true);
-    $slug = Str::slug($title, '-');
-    return [
-        'title'          => $title,
-        'slug'           => $slug,
-        'description'    => $faker->realText(),
-        'online_at'      => $faker->dateTime(),
-        'offline_at'     => $faker->dateTime(),
-        'price'          => $faker->randomNumber(),
-        'currency'       => $faker->currencyCode,
-        'contact_mobile' => $faker->phoneNumber,
-        'contact_email'  => $faker->email,
-    ];
-});
+class ListingFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Listing::class;
 
-$factory->state(Listing::class, 'with_category', function ($faker) {
-    return [
-        'category_id' => factory(Category::class)->create()->id,
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $title = $this->faker->words(3, true);
+        $slug = Str::slug($title, '-');
+        return [
+            'title'          => $title,
+            'slug'           => $slug,
+            'description'    => $this->faker->realText(),
+            'online_at'      => $this->faker->dateTime(),
+            'offline_at'     => $this->faker->dateTime(),
+            'price'          => $this->faker->randomNumber(),
+            'currency'       => $this->faker->currencyCode,
+            'contact_mobile' => $this->faker->phoneNumber,
+            'contact_email'  => $this->faker->email,
+        ];
+    }
 
-$factory->state(Listing::class, 'with_user', function ($faker) {
-    return [
-        'user_id' => factory(User::class)->create()->id,
-    ];
-});
+    /**
+     * Indicate that the listing has a category.
+     *
+     * @return Factory
+     */
+    public function withCategory()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'category_id' => Category::factory()->create()->id,
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the listing has a user.
+     *
+     * @return Factory
+     */
+    public function withUser(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'user_id' => User::factory()->create()->id,
+            ];
+        });
+    }
+}
