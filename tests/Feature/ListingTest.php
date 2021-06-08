@@ -19,7 +19,7 @@ class ListingTest extends TestCase
     /** @test */
     public function test_listing_creation_page_contains_livewire_component()
     {
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs(User::factory()->create());
 
         $this->get('/listing/create')->assertSeeLivewire('listing-create-form');
     }
@@ -29,9 +29,9 @@ class ListingTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs(User::factory()->create());
 
-        $category = factory(Category::class)->create();
+        $category = Category::factory()->create();
 
         Livewire::test(ListingCreateForm::class)
             ->set('title', 'Test')
@@ -51,7 +51,7 @@ class ListingTest extends TestCase
     /** @test */
     public function test_title_is_required()
     {
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs(User::factory()->create());
 
         Livewire::test(ListingCreateForm::class)
             ->set('title', '')
@@ -62,7 +62,7 @@ class ListingTest extends TestCase
     /** @test */
     public function test_contactEmail_format_is_ok()
     {
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs(User::factory()->create());
 
         Livewire::test(ListingCreateForm::class)
             ->set('contactEmail', 'notAnEmail')
@@ -73,9 +73,9 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_is_redirected_to_home_page_after_creation()
     {
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs(User::factory()->create());
 
-        $category = factory(Category::class)->create();
+        $category = Category::factory()->create();
 
         Livewire::test(ListingCreateForm::class)
             ->set('title', 'Test')
@@ -94,7 +94,7 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_show_a_listing_details()
     {
-        $listing = factory(Listing::class)->states('with_category', 'with_user')->create();
+        $listing = Listing::factory()->withCategory()->withUser()->create();
 
         $response = $this->get(route('listings.show', $listing));
 
@@ -108,11 +108,11 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_search_by_listing_title()
     {
-        $listing = factory(Listing::class)->states('with_category', 'with_user')->create([
+        $listing = Listing::factory()->withCategory()->withUser()->create([
             'title' => 'Test title',
         ]);
 
-        factory(Listing::class)->states('with_category', 'with_user')->create();
+        Listing::factory()->withCategory()->withUser()->create();
 
         $response = $this->get(route('listings', ['search' => $listing->title]));
 
@@ -122,19 +122,19 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_search_by_category()
     {
-        $category = factory(Category::class)->create([
+        $category = Category::factory()->create([
             'name' => 'Category 1',
          ]);
 
-        factory(Listing::class)->states('with_user')->create([
+        Listing::factory()->withUser()->create([
             'category_id' => $category->id,
         ]);
 
-        $anotherCategory = factory(Category::class)->create([
+        $anotherCategory = Category::factory()->create([
             'name' => 'Category 2',
         ]);
 
-        factory(Listing::class)->states('with_user')->create([
+        Listing::factory()->withUser()->create([
             'category_id' => $anotherCategory->id,
         ]);
 
@@ -146,19 +146,19 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_filter_by_category()
     {
-        $category = factory(Category::class)->create([
+        $category = Category::factory()->create([
             'name' => 'Category 1',
         ]);
 
-        factory(Listing::class)->states('with_user')->create([
+        Listing::factory()->withUser()->create([
             'category_id' => $category->id,
         ]);
 
-        $anotherCategory = factory(Category::class)->create([
+        $anotherCategory = Category::factory()->create([
             'name' => 'Category 2',
         ]);
 
-        factory(Listing::class)->states('with_user')->create([
+        Listing::factory()->withUser()->create([
             'category_id' => $anotherCategory->id,
         ]);
 
@@ -170,16 +170,23 @@ class ListingTest extends TestCase
     /** @test */
     public function test_it_can_filter_by_price()
     {
-        factory(Listing::class)->states('with_category', 'with_user')->create([
+        Listing::factory()->withCategory()->withUser()->create([
             'price' => 100,
         ]);
 
-        factory(Listing::class)->states('with_category', 'with_user')->create([
+        Listing::factory()->withCategory()->withUser()->create([
             'price' => 1000,
         ]);
 
         $response = $this->get(route('listings', ['prices' => [PriceFilter::FROM_100_TO_500]]));
 
         $response->assertJsonCount(1, 'data');
+    }
+
+    protected function tearDown(): void
+    {
+        $this->artisan('scout:flush', ['model' => 'App\Models\Listing']);
+
+        parent::tearDown();
     }
 }

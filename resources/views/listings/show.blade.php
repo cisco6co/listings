@@ -11,7 +11,7 @@
                              src="@if ($listing->getFirstMediaUrl('images', 'detail') != '')
                                     {{ $listing->getFirstMediaUrl('images', 'detail') }}
                                  @else
-                                    {{ 'http://placehold.it/400x300' }}
+                                    {{ 'https://via.placeholder.com/400x300?text=' }}{{$listing->category->name}}
                                 @endif" alt="{{ $listing->title }} image">
                         <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                             <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">{{ $listing->title }}</h1>
