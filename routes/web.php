@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,11 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Route::middleware('doNotCacheResponse')->group(function () {
+    Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('/api/listings', 'ListingController@index')->name('listings');
-Route::get('/listing/create', 'ListingController@create')->name('listings.create')->middleware('auth');
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/listing/create', 'ListingController@create')->name('listings.create');
+    Route::get('/api/listings', 'ListingController@index')->name('listings');
+    Route::get('/api/categories', 'CategoryController@index')->name('categories');
+    Route::get('/api/listings/prices', 'ListingPriceController')->name('listings.prices');
+});
+
 Route::get('/listing/{listing}', 'ListingController@show')->name('listings.show');
-Route::get('/api/categories', 'CategoryController@index')->name('categories');
-Route::get('/api/listings/prices', 'ListingPriceController')->name('listings.prices');
