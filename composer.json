@@ -21,6 +21,7 @@
         "livewire/livewire": "^2.4",
         "meilisearch/meilisearch-php": "^0.18.2",
         "spatie/laravel-medialibrary": "^7.0.0",
+        "spatie/laravel-responsecache": "^6.6",
         "tightenco/ziggy": "^0.9.4"
     },
     "require-dev": {
