@@ -7,7 +7,12 @@ use App\Models\Listing;
 
 class PriceService
 {
-    public function getPrices()
+    /**
+     * Return price filters with listing count.
+     *
+     * @return array
+     */
+    public function getPrices(): array
     {
         $prices = [];
 
@@ -21,6 +26,13 @@ class PriceService
         return $prices;
     }
 
+    /**
+     * Returns the listing count.
+     *
+     * @param $index
+     *
+     * @return mixed
+     */
     private function getListingCount($index)
     {
         return Listing::withFilters()
@@ -42,6 +54,13 @@ class PriceService
             ->count();
     }
 
+    /**
+     * Get the label for the price filter.
+     *
+     * @param $index
+     *
+     * @return string
+     */
     private function getPriceName($index)
     {
         return ucfirst(strtolower(str_replace('_', ' ', PriceFilter::getKey($index))));

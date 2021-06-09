@@ -1,4 +1,5 @@
 <?php
+namespace Database\Seeders;
 
 use App\Enums\Currency;
 use App\Models\Listing;
@@ -13,29 +14,29 @@ class ListingSeeder extends Seeder
      */
     public function run()
     {
-        // Create ten Furnitures.
-        Listing::factory()->count(10000)->make([
+        // Create one thousand Furnitures.
+        Listing::factory()->count(1000)->create([
             'currency'    => Currency::getRandomValue(),
             'category_id' => 1,
             'user_id'     => 1,
         ]);
 
-        // Create ten Electronics.
-        Listing::factory()->count(10000)->make([
+        // Create one thousand Electronics.
+        Listing::factory()->count(1000)->create([
             'currency'    => Currency::getRandomValue(),
             'category_id' => 2,
             'user_id'     => 1,
         ]);
 
-        // Create ten Cars.
-        Listing::factory()->count(10000)->make([
+        // Create one thousand Cars.
+        Listing::factory()->count(1000)->create([
             'currency'    => Currency::getRandomValue(),
             'category_id' => 3,
             'user_id'     => 1,
         ]);
 
-        // Create ten Properties.
-        Listing::factory()->count(10000)->make([
+        // Create one thousand Properties.
+        Listing::factory()->count(1000)->create([
             'currency'    => Currency::getRandomValue(),
             'category_id' => 4,
             'user_id'     => 1,
