@@ -79,6 +79,11 @@ class ListingCreateForm extends Component
         return view('livewire.listing-create-form');
     }
 
+    /**
+     * Returns the slug for a listing.
+     *
+     * @return string
+     */
     public function generateSlug()
     {
         $slug = Str::slug($this->title, '-');
@@ -94,6 +99,9 @@ class ListingCreateForm extends Component
         return $slug;
     }
 
+    /**
+     * Redirects to the home page.
+     */
     public function redirectToHome()
     {
         return $this->redirectRoute('home');

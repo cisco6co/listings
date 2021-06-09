@@ -6,6 +6,9 @@ This is a simple Listing App which contains only:
 - A Listing Detail Page
 - A Create Listing Page
 
+Meilisearch is used with Laravel scout for better performance when searching.
+Response Cache is used as well for perfomance purposes.
+
 ### Technologies used
 
 - Laravel (PHP)
@@ -18,6 +21,8 @@ This is a simple Listing App which contains only:
 - [livewire/livewire](https://github.com/livewire/livewire)
 - [spatie/laravel-medialibrary](https://github.com/spatie/laravel-medialibrary)
 - [tightenco/ziggy](https://github.com/tightenco/ziggy)
+- [laravel/scout](https://github.com/laravel/scout)
+- [spatie/laravel-responsecache](https://github.com/spatie/laravel-responsecache)
 
 ### Libraries used
 
